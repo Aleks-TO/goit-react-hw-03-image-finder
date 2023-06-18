@@ -2,10 +2,10 @@ import css from './imageGallery.module.css';
 import ImageGalleryItem from 'components/imageGalleryItem/imageGalleryItem';
 import PropTypes from 'prop-types';
 
-const ImageGallery = ({ pictures }) => {
+const ImageGallery = ({ images }) => {
   return (
     <ul class="gallery">
-      {pictures.map(el => (
+      {images.map(el => (
         <ImageGalleryItem el={el} key={el.id} />
       ))}
     </ul>
@@ -15,7 +15,7 @@ const ImageGallery = ({ pictures }) => {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
-  pictures: PropTypes.arrayOf(
+  images: PropTypes.arrayOf(
     PropTypes.shape({ id: PropTypes.number.isRequired })
   ).isRequired,
 };

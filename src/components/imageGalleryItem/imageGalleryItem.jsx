@@ -1,20 +1,33 @@
 import css from './imageGalleryItem.module.css';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { Modal } from 'components/Modal/Modal';
 
-const ImageGalleryItem = ({ card }) => {
-  return (
-    <li key={card.id} className={css.ImageGalleryItem}>
-      <img
-        src={card.webformatURL}
-        alt={card.largeImageURL}
-        className={css.ImageGalleryItemImage}
-      />
-    </li>
-  );
-};
+export class ImageGalleryItem extends Component {
+  state = {
+    showModal: false,
+  };
 
-export default ImageGalleryItem;
+  render() {
+    const { smallImg, description, bigImg } = this.props;
+    return (
+      <li className={css.ImageGalleryItem}>
+        <img
+          src={smallImg}
+          alt={description}
+          className={css.ImageGalleryItemImage}
+          onClick={this.openModal}
+        />
+        {this.state.showModal && (
+          <Modal onClose={this.closeModal} url={bigImg} />
+        )}
+      </li>
+    );
+  }
+}
 
-ImageGalleryItem.prototype = {
-  card: PropTypes.object,
+ImageGalleryItem.propTypes = {
+  smallUrl: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  bigUrl: PropTypes.string.isRequired,
 };
