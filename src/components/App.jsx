@@ -3,6 +3,7 @@ import Searchbar from './searchbar/searchbar';
 import { fetchPictures, perPage } from 'API/api';
 import ImageGallery from './imageGallery/imageGallery';
 import Loader from './loader/loader';
+import { Button } from './button/button';
 import css from './App.module.css';
 
 export class App extends Component {
@@ -20,10 +21,51 @@ export class App extends Component {
 
   componentDidUpdate(_, prevState) {
     const { name, page } = this.state;
+
     if (prevState.name !== name || prevState.page !== page) {
-      this.getPicture(name, page);
+      this.getPhoto(name, page);
     }
   }
+
+  onSubmit = value => {
+    this.setState({
+      images: [],
+      name: value,
+      page: 1,
+      isEmpty: true,
+      isVisible: false,
+      error: null,
+    });
+  };
+
+  getPhoto = async (name, page) => {
+    if (!name) {
+      return;
+    }
+    this.setState({ isLoading: true });
+    try {
+      const { hits, totalHits } = await fetchPictures(name, page);
+      if (hits === 0) {
+        this.setState({ isEmpty: true });
+      }
+      this.setState(prevState => ({
+        images: [...prevState.images, ...hits],
+        isEmpty: false,
+        isVisible: Math.ceil(totalHits / 12),
+      }));
+    } catch (error) {
+      console.log(error);
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
+    }
+  };
+
+  onLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
 
   render() {
     const { images, isEmpty, isVisible, error, isLoading } = this.state;
@@ -33,8 +75,8 @@ export class App extends Component {
         {isEmpty && <p className={css.text}>Sorry, there are no images...</p>}
         {error && <p className={css.text}>Sorry, {error}</p>}
         <ImageGallery images={images} />
-        {/* {isVisible &&
-          (isLoading ? <Loader /> : <Button onClick={this.onLoadMore} />)} */}
+        {isVisible &&
+          (isLoading ? <Loader /> : <Button onClick={this.onLoadMore} />)}
       </div>
     );
   }
