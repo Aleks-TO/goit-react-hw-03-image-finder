@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Searchbar from './searchbar/searchbar';
-import { fetchPictures, perPage } from 'API/api';
+import { fetchPictures } from 'API/api';
 import ImageGallery from './imageGallery/imageGallery';
 import Loader from './loader/loader';
 import { Button } from './button/button';
