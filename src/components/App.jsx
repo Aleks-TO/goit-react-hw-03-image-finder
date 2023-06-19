@@ -28,6 +28,9 @@ export class App extends Component {
   }
 
   onSubmit = value => {
+    if (value === this.state.name) {
+      return alert('Please write another name');
+    }
     this.setState({
       images: [],
       name: value,

@@ -7,9 +7,9 @@ export class Searchbar extends Component {
     name: '',
   };
 
-  reset = () => {
-    this.setState({ name: '' });
-  };
+  // reset = () => {
+  //   this.setState({ name: '' });
+  // };
 
   handleSubmit = event => {
     event.preventDefault();
